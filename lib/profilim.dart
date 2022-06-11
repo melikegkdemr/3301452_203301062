@@ -1,53 +1,88 @@
-import 'package:flutter/material.dart';
-import 'package:proje/datacontrol.dart';
-import 'package:proje/kisi_ekle.dart';
-import 'package:proje/kisi_model.dart';
+import 'dart:io';
 
-class profilim extends StatelessWidget {
-  const profilim({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+
+class gununSozu extends StatefulWidget {
+  @override
+  State<gununSozu> createState() => _gununSozuState();
+}
+
+class _gununSozuState extends State<gununSozu> {
+  var tfGirdi = TextEditingController();
+  String mesaj="";
 
   @override
   Widget build(BuildContext context) {
-    var ekranBilgisi = MediaQuery.of(context);
-    final double ekranYuksekligi = ekranBilgisi.size.height;
-    final double ekranGenisligi = ekranBilgisi.size.width;
     return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: DataControl.kisiler.length > 0
-              ? DataControl.kisiler
-                  .map((e) => SizedBox(
-                    
-                    width: ekranGenisligi,
-                    height: ekranYuksekligi/2 ,
-                    child: Card(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 200,
-                              child: Image.asset("resimler/okur.png")),
-                              Spacer(),
-                            Text(e.Kullaniciismi,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold)),
-                            Text("E-mail: ${e.email}"),
-                            Text("Cinsiyet: ${e.cinsiyet}"),
-                            Text("Doğum Tarihi: ${e.dogumTarihi}"),
-                            Text("Mini Biyografi: ${e.biyografi}"),
-                            Spacer(),
-                          ]),
-                    ),
-                  ))
-                  .toList()
-              : bosliste(),
-        ),
-      ),
-    );
+        appBar: AppBar(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: tfGirdi,
+                decoration: InputDecoration(hintText: "Günün Sözünü Giriniz"),
+              ),
+            ),
+            ElevatedButton(
+              child: Text("Yaz"),
+              onPressed: () {
+                veriYaz();
+              },
+            ),
+           // veriOku().then((value)=>Text(value));
+           
+            Text(mesaj),
+            ElevatedButton(
+              child: Text("Gör"),
+              onPressed: () {
+                setState(() {
+                  
+                });
+                veriOku().then((value) => mesaj=value);
+              },
+            )
+          ],
+        ));
   }
 
-  List<Widget> bosliste() {
-    return [const Text("")];
+   _oku()async{
+    var data= await veriOku();
+  return data;
+  }
+
+ Future<String> veriOku() async {
+    String okunanVeri = "";
+
+    try {
+      var ad = await getApplicationDocumentsDirectory();
+
+      var uygulamaDosyalamaYolu = await ad.path;
+
+      var dosya = File("$uygulamaDosyalamaYolu/dosyam.txt");
+
+       okunanVeri = await dosya.readAsString();
+
+
+    } catch (e) {
+      e.toString();
+    }
+
+    return okunanVeri;
+
+  }
+
+  Future<void> veriYaz() async {
+    var ad = await getApplicationDocumentsDirectory();
+
+    var uygulamaDosyalamaYolu = await ad.path;
+
+    var dosya = File("$uygulamaDosyalamaYolu/dosyam.txt");
+
+    dosya.writeAsString(tfGirdi.text);
+
+    tfGirdi.text = "";
   }
 }

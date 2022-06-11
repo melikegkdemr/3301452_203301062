@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "725461855378",
+    "firebase_url": "https://projectokul-42f05-default-rtdb.firebaseio.com",
+    "project_id": "projectokul-42f05",
+    "storage_bucket": "projectokul-42f05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725461855378:android:037fe64ba721c531a10a4b",
+        "android_client_info": {
+          "package_name": "com.example.proje"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725461855378-918388se6b6f7s6v8jjdpondhl3f4g4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpCcnmhVWae2nf4kcqN5QjQ184RRwRRts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725461855378-918388se6b6f7s6v8jjdpondhl3f4g4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proje/main.dart';
-import 'package:proje/kisi_ekle.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,25 +13,60 @@ var formKey = GlobalKey<FormState>();
 var tfKullaniciAdi = TextEditingController();
 var tfSifre = TextEditingController();
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  late AnimationController animasyonKontrol;
+  late Animation<double> alphaAnimasyonDegerleri;
+  late Animation animation;
+  @override
+  void initState() {
+    super.initState();
+    animasyonKontrol =
+        AnimationController(duration: Duration(seconds: 3), vsync: this);
+
+    alphaAnimasyonDegerleri =
+        Tween(begin: 0.0, end: 1.0).animate(animasyonKontrol)
+          ..addListener(() {
+            setState(() {});
+          });
+    animation = AlignmentTween(
+            begin: const Alignment(1, 0), end: const Alignment(-1, 0))
+        .animate(CurvedAnimation(
+            parent: animasyonKontrol, curve: Curves.easeInOutExpo));
+
+    animasyonKontrol.forward().orCancel;
+    animasyonKontrol.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    animasyonKontrol.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: const Text(""),
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("resimler/anasayfaBook.png"),
-              Text(
-                "Bir Kitapla Mümkün!",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic),
+              Opacity(
+                  opacity: alphaAnimasyonDegerleri.value,
+                  child: Image.asset("resimler/anasayfaBook.png")),
+              Container(
+                alignment: animation.value,
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "Bir Kitapla Mümkün!",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic),
+                ),
               ),
               Form(
                 key: formKey,
@@ -69,14 +103,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
- 
-  
 
   Widget _loginButton() => ElevatedButton(
         child: Text("Giriş Yap"),
         onPressed: () {
           bool kontrolSonuc = formKey.currentState!.validate();
-          if(kontrolSonuc){
+          if (kontrolSonuc) {
             String ka = tfKullaniciAdi.text;
             String s = tfSifre.text;
             print("Kullanıcı adı: $ka - Şifre: $s");
@@ -89,8 +121,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Anasayfa()));
             } else {
-              
-               showDialog(
+              showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(

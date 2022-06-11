@@ -18,7 +18,7 @@ class OkudugumKitaplar extends StatelessWidget {
     body: Center(
       child: SingleChildScrollView(
         child: Column(
-          children: DataControl.kitaplar.length > 1 ? DataControl.kitaplar.map((e) =>
+          children: DataControl.kitaplar.length > 0 ? DataControl.kitaplar.map((e) =>
            SizedBox(
              width: ekranGenisligi,
              height: ekranYuksekligi/4,

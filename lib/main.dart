@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:proje/Yazarlar.dart';
 import 'package:proje/kitap_ekle.dart';
-import 'package:proje/kitaplar%C4%B1m.dart';
+import 'package:proje/KategorilerSayfa.dart';
 import 'package:proje/login_page.dart';
 import 'package:proje/okudugum_kitaplar.dart';
-import 'package:proje/kisi_ekle.dart';
+import 'package:proje/search.dart';
+import 'package:proje/sozluk.dart';
 import 'package:proje/profilim.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -45,21 +49,37 @@ var secenekler = [];
         crossAxisCount: 2,
         childAspectRatio: 2/3,
         children: [
-          
           GestureDetector(
-            onTap: (){
-             Navigator.push(context, MaterialPageRoute(builder: (context) => profilim()));
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: ((context) => SearchPage())));
             },
             child: Card(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.person,),
-                  Text("Profilim"),
+                  Icon(Icons.search),
+                  Text("Kitap Ara"),
                 ],
               ),
             ),
           ),
+           GestureDetector(
+            onTap: () {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => KategorilerSayfa()));
+            },
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.book),
+                  Text("Tavsiye Kitaplar"),
+                ],
+              ),
+            ),
+          ),
+          
+          
+          
           GestureDetector(
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => kisi_ekle()));
@@ -68,8 +88,8 @@ var secenekler = [];
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.group_add_sharp),
-                  Text("Kullanıcı Ekle"),
+                  Icon(Icons.abc),
+                  Text("Sözlük"),
                 ],
               ),
             ),
@@ -105,33 +125,21 @@ var secenekler = [];
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: ((context) => Yazarlar())));
+            onTap: (){
+             Navigator.push(context, MaterialPageRoute(builder: (context) => gununSozu()));
             },
             child: Card(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.bookmark_remove),
-                  Text("Yazarlar"),
+                  Icon(Icons.abc),
+                  Text("Gunun Sozu"),
                 ],
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => Kitaplarim()));
-            },
-            child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.book),
-                  Text("Tavsiye Kitaplar"),
-                ],
-              ),
-            ),
-          ),
+          
+         
          
         ],
       ),

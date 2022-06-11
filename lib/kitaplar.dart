@@ -1,24 +1,19 @@
-class Kitaplar {
-  int kitap_id;
-  String kitapAdi;
-  String yazarAdi;
-  int sayfaSayisi;
-  String kitapResimAdi;
-  double kitapFiyat;
-  String kitapTuru;
-  String kitap_icerigi;
-  int basim_yili = 0;
-  String ebat;
+import 'package:proje/Kategori_model.dart';
 
-  Kitaplar(
-      {required this.kitap_id,
-      required this.kitapAdi,
-      required this.kitapFiyat,
-      required this.kitapResimAdi,
-      required this.kitapTuru,
-      required this.sayfaSayisi,
-      required this.yazarAdi,
-      required this.kitap_icerigi,
-      required this.basim_yili,
-      required this.ebat});
+class Kitaplar {
+  String kitap_id;
+  String kitapAdi;
+  String yazar_ad;
+  String kitapResimAdi;
+  String kategori_ad;
+
+  Kitaplar(this.kitap_id, this.kitapAdi, this.yazar_ad, this.kitapResimAdi, this.kategori_ad);
+
+  factory Kitaplar.fromJson(String key, Map<dynamic,dynamic> json){
+    return Kitaplar(key,
+    json["kitapAdi"] as String,
+    json["yazar_ad"] as String,
+    json["kitapResimAdi"] as String,
+    json["kategori_ad"] as String, );
+  }
 }
