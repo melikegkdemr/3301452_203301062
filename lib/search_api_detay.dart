@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Kitap.dart';
+import 'model/Kitap.dart';
 
 
 class KitapDetaySayfa extends StatelessWidget {

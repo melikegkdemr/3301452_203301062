@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proje/Kategori_model.dart';
+import 'package:proje/model/Kategori_model.dart';
 import 'package:proje/KitaplarSayfa.dart';
 import 'package:firebase_database/firebase_database.dart';
 

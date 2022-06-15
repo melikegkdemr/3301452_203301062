@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:proje/Kelimelerdao.dart';
-import 'package:proje/Kelimeler.dart';
+import 'package:proje/services/Kelimelerdao.dart';
+import 'package:proje/model/Kelimeler.dart';
 
 
 class kisi_ekle extends StatefulWidget {
@@ -16,7 +16,7 @@ String email = "";
 String biyografi = "";
 
 class _kisi_ekleState extends State<kisi_ekle> {
-  var formKey = GlobalKey<FormState>();
+  var formKey4 = GlobalKey<FormState>();
 
   bool aramaYapiliyorMu = false;
   String aramaKelimesi = "";

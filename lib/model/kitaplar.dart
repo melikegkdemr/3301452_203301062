@@ -1,4 +1,4 @@
-import 'package:proje/Kategori_model.dart';
+import 'package:proje/model/Kategori_model.dart';
 
 class Kitaplar {
   String kitap_id;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:proje/DetaySayfa.dart';
-import 'package:proje/Kategori_model.dart';
-import 'package:proje/kitaplar.dart';
+import 'package:proje/model/Kategori_model.dart';
+import 'package:proje/model/kitaplar.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import 'model/Kategori_model.dart';
 
 class KitaplarSayfa extends StatefulWidget {
 

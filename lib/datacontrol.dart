@@ -1,5 +1,5 @@
-import 'package:proje/kitap_model.dart';
-import 'package:proje/kisi_model.dart';
+import 'package:proje/model/kitap_model.dart';
+import 'package:proje/model/kisi_model.dart';
 
 class DataControl{
 

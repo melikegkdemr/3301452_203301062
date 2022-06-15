@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:proje/datacontrol.dart';
-import 'package:proje/kitap_model.dart';
+import 'package:proje/model/kitap_model.dart';
 
 
 class KitapEkle extends StatelessWidget {
    KitapEkle({Key? key}) : super(key: key);
- GlobalKey<FormState> formKey = GlobalKey<FormState>();
+ GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
+ FirebaseFirestore _firestore=FirebaseFirestore.instance;
+ FirebaseAuth _auth=FirebaseAuth.instance;
+ 
+ 
   @override
   Widget build(BuildContext context) {
     String kitapAdi="";
@@ -16,7 +22,7 @@ class KitapEkle extends StatelessWidget {
 
     return Scaffold(appBar: AppBar(),
     body: Form(
-      key: formKey,
+      key: formKey3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Padding(
@@ -58,10 +64,19 @@ class KitapEkle extends StatelessWidget {
                 },
               ),
               
-              ElevatedButton(onPressed: () {
-                if(formKey.currentState!.validate()){
-                  KitapModel yeniKitap=KitapModel(kitapAdi, yazarAdi, kitapTuru, kitapIcerigi);
-                  DataControl.kitapEkle(yeniKitap);
+              ElevatedButton(onPressed: ()  async{
+                if(formKey3.currentState!.validate()){
+                  KitapModel yeniKitap=KitapModel(kullaniciId: _auth.currentUser!.uid,kitapAd: kitapAdi, yazarAdi: yazarAdi,kitapTuru:  kitapTuru,kitapIcerik:  kitapIcerigi);
+                   var ref = _firestore.collection("Kitaplar");
+
+ await ref.add({
+      'kullaniciId': yeniKitap.kullaniciId,
+      'kitapAd': yeniKitap.kitapAd,
+      'kitapIcerik': yeniKitap.kitapIcerik,
+      'kitapTuru': yeniKitap.kitapTuru,
+      'yazarAdi': yeniKitap.yazarAdi
+    });
+    Navigator.pop(context);
                   print(DataControl.kitaplar);
 
                 }

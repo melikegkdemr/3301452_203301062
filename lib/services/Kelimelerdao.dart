@@ -1,5 +1,5 @@
-import 'package:proje/Kelimeler.dart';
-import 'package:proje/VeritabaniYardimcisi.dart';
+import 'package:proje/model/Kelimeler.dart';
+import 'package:proje/services/VeritabaniYardimcisi.dart';
 
 class Kelimelerdao {
   Future<List<Kelimeler>> tumKelimeler() async {

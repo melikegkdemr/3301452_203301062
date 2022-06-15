@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:proje/main.dart';
+import 'package:proje/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ String Sifre = "";
 var formKey = GlobalKey<FormState>();
 var tfKullaniciAdi = TextEditingController();
 var tfSifre = TextEditingController();
+late FirebaseAuth _auth;
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   late AnimationController animasyonKontrol;
@@ -20,6 +23,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _auth=FirebaseAuth.instance;
     animasyonKontrol =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
 
@@ -86,7 +90,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       children: [
                         MaterialButton(
                           child: Text("Üye Ol"),
-                          onPressed: () {},
+                          onPressed: () {
+Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => RegisterPage()));                          },
                         ),
                         MaterialButton(
                           child: Text("Şifremi Unuttum"),
@@ -105,23 +111,24 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   Widget _loginButton() => ElevatedButton(
+    
         child: Text("Giriş Yap"),
-        onPressed: () {
+        onPressed: () async {
+          
           bool kontrolSonuc = formKey.currentState!.validate();
           if (kontrolSonuc) {
             String ka = tfKullaniciAdi.text;
             String s = tfSifre.text;
             print("Kullanıcı adı: $ka - Şifre: $s");
-          }
-          setState(() {
-            KullaniciAdi = tfKullaniciAdi.text;
-            Sifre = tfSifre.text;
-
-            if (KullaniciAdi == "a" && Sifre == "a") {
-              Navigator.push(
+            try{
+              await _auth.signInWithEmailAndPassword(email: ka, password: s).then((value) {
+                if(value.user!=null){
+                  Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Anasayfa()));
-            } else {
-              showDialog(
+                }
+                else{
+                  print("yanlış girişşşşşş");
+                  showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
@@ -129,8 +136,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                       content: Text("Hatalı giriş! Lütfen tekrar deneyiniz"),
                     );
                   });
-            }
-          });
+                }
+               });
+            }catch(e){}
+
+          }
+         
+          
         },
       );
 

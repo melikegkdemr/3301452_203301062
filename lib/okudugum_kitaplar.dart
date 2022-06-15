@@ -1,52 +1,74 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:proje/datacontrol.dart';
+import 'package:proje/model/kitap_model.dart';
 
-class OkudugumKitaplar extends StatelessWidget {
+class KitapListe extends StatefulWidget {
+  const KitapListe({Key? key}) : super(key: key);
 
+  @override
+  State<KitapListe> createState() => _KitapListeState();
+}
 
-  const OkudugumKitaplar({Key? key}) : super(key: key);
+class _KitapListeState extends State<KitapListe> {
+  late FirebaseFirestore _services;
+  late FirebaseAuth _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _services = FirebaseFirestore.instance;
+    _auth = FirebaseAuth.instance;
+  }
 
   @override
   Widget build(BuildContext context) {
-    var ekranBilgisi = MediaQuery.of(context);
-    final double ekranYuksekligi = ekranBilgisi.size.height;
-  final double ekranGenisligi = ekranBilgisi.size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Okuduğunuz Kitaplar"),
+        title: const Text("Okuduğum Kitaplar"),
+        leading: const Icon(Icons.bookmarks_outlined),
       ),
-    body: Center(
-      child: SingleChildScrollView(
-        child: Column(
-          children: DataControl.kitaplar.length > 0 ? DataControl.kitaplar.map((e) =>
-           SizedBox(
-             width: ekranGenisligi,
-             height: ekranYuksekligi/4,
-             child: Card(
-               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   Text(e.kitapAdi, style: TextStyle(fontWeight: FontWeight.bold),),
-                   Text(e.yazarAdi),
-                   Text(e.kitap_icerigi),
-                   ]
-                 ),
-      
-             ),
-           )).toList():liste(),
-          
-          ),
+      body: StreamBuilder(
+        stream: kitapGetir(_auth.currentUser!.uid),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemCount: snapshot.data!.size,
+                  itemBuilder: (BuildContext context, int index) {
+                    var kitap = snapshot.data!.docs[index];
+
+                    return Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.menu_book),
+                            focusColor: Colors.pink,
+                            title: Text(
+                              kitap["kitapAd"],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(kitap["yazarAdi"]),
+                           // isThreeLine: true,
+                            
+
+                          ),
+                        ],
+                      ),
+                    );
+                  })
+              : const CircularProgressIndicator();
+        },
       ),
-    ),
-    
     );
   }
 
-
-
-List<Widget> liste(){
-  return [const Text("")];
-}
-
-
+  Stream<QuerySnapshot> kitapGetir(String kulId) {
+    var docm = _services
+        .collection("Kitaplar")
+        .where("kullaniciId", isEqualTo: kulId)
+        .snapshots();
+    return docm;
+  }
 }
